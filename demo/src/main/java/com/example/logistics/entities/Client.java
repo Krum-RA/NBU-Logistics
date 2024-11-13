@@ -3,7 +3,7 @@ package com.example.logistics.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
-@Data
+@Data // анотация от lombok автоматично генерира гетъри, сетъри, tostring, equals, hashcode, constructor без аргументи
 @Entity
 public class Client {
     @Id
