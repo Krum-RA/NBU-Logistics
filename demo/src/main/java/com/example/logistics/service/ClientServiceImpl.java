@@ -36,28 +36,30 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ClientDto createClient(ClientDto clientDto) {
+    public Long createClient(ClientDto clientDto) {
         Client client = new Client();
-        client.setAddress(clientDto.getAddress());
         client.setName(clientDto.getName());
+        client.setAddress(clientDto.getAddress());
         client.setPhoneNumber(clientDto.getPhoneNumber());
-        clientRepository.save(client);
-        return null;
+
+        Client savedClient = clientRepository.save(client);
+
+        return savedClient.getId();
     }
 
     @Override
-    public ClientDto updateClient(Long id, ClientDto clientDto) {
+    public Boolean updateClient(Long id, ClientDto clientDto) {
         Optional<Client> clientOptional = clientRepository.findById(id);
         if (clientOptional.isPresent()) {
             Client client = clientOptional.get();
             client.setName(clientDto.getName());
             client.setAddress(clientDto.getAddress());
             client.setPhoneNumber(clientDto.getPhoneNumber());
-            Client updatedClient = clientRepository.save(client);
-            return convertToDto(updatedClient);
+            clientRepository.save(client);
+            return true;
         }
         else {
-            throw new ResourceNotFoundException("Client not found with id: " + id);
+            return false;
         }
     }
 

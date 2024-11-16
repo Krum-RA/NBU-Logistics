@@ -28,15 +28,21 @@ public class ClientController {
     }
 
     @PostMapping("/createClient")
-    public ResponseEntity<ClientDto> createClient(@RequestBody ClientDto clientDto) {
-        ClientDto newClient = clientService.createClient(clientDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newClient);
+    public ResponseEntity<Long> createClient(@RequestBody ClientDto clientDto) {
+        Long clientId = clientService.createClient(clientDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(clientId);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClientDto> updateClient(@PathVariable Long id, @RequestBody ClientDto clientDto) {
-        ClientDto updatedClient = clientService.updateClient(id, clientDto);
-        return ResponseEntity.ok(updatedClient);
+    public ResponseEntity<String> updateClient(@PathVariable Long id, @RequestBody ClientDto clientDto) {
+        boolean isupdated = clientService.updateClient(id, clientDto);
+        if(isupdated){
+            return ResponseEntity.ok("Client updated");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client with ID " + id + " not found");
+        }
+
     }
 
     @DeleteMapping("/{id}")
